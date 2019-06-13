@@ -10,7 +10,7 @@ import cv2
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
-VIDEO_DIR = "test_data/Cam2_Indoor.avi"
+IMAGE_DIR = "test_data/image1.jpg"
 # What model to download.
 MODEL_NAME = 'model_data/ssd_mobilenet_v1_coco_2017_11_17'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
@@ -43,11 +43,10 @@ def load_image_into_numpy_array(image):
 
 
 # # Detection
-cap = cv2.VideoCapture(VIDEO_DIR)#0
 with detection_graph.as_default():
   with tf.Session(graph=detection_graph) as sess:
-    #while True:
-      ret, image_np = cap.read()
+
+      image_np = cv2.imread(IMAGE_DIR)
       # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
       image_np_expanded = np.expand_dims(image_np, axis=0)
       image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
@@ -75,6 +74,4 @@ with detection_graph.as_default():
       cv2.imshow('object detection', cv2.resize(image_np, (800,600)))
       cv2.waitKey(0)
       cv2.destroyAllWindows()
-      #if cv2.waitKey(25) & 0xFF == ord('q'):
-      #  cv2.destroyAllWindows()
-        #break
+     
